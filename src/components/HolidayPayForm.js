@@ -5,14 +5,16 @@ function GeneratorForm() {
     const [averageSalary, setAverageSalary] = useState("");
     const [holidayStartDate, setHolidayStartDate] = useState("");
     const [holidayEndDate, setHolidayEndDate] = useState("");
+    const [isThereFiveWorkingDays, setIsThereFiveWorkingDays] = useState(false);
 
     const [holidayPay, setHolidayPay] = useState(null);
 
     const save = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.get("http://localhost:8080/api/holiday_pay/calculate?averageSalary="
-                + averageSalary + "&holidayStartDate=" + holidayStartDate + "&holidayEndDate=" + holidayEndDate);
+            const response = await axios.get("http://localhost:8080/api/holiday_pay_calculator/calculate?holidayDaysNumber=0&averageSalary="
+                + averageSalary + "&holidayStartDate=" + holidayStartDate + "&holidayEndDate="
+                + holidayEndDate + "&isThereFiveWorkingDays=" + isThereFiveWorkingDays);
             setHolidayPay(response.data.vacationPay);
         } catch (err) {
             alert("В ходе расчета возникла ошибка.");
@@ -84,6 +86,17 @@ function GeneratorForm() {
                         <div class="cut cut3"></div>
                         <label for="holidayEndDate" class="placeholder">День конца отпуска</label>
                     </div>
+
+                    <div class="input-container ic2">
+                        <label class="container">Пятидневная рабочая неделя?
+                            <input
+                                type="checkbox"
+                                onChange={(e) => setIsThereFiveWorkingDays(e.target.checked)}
+                            />
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+
 
                     <button type="submit" class="submit">Рассчитать отпускные</button>
 
